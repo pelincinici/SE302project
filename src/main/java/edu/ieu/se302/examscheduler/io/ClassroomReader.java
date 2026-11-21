@@ -15,9 +15,13 @@ import java.util.Set;
  * Reads the classroom file.
  *
  * Format: one classroom per line as "name;capacity", for example "Classroom_01;40".
- * The first line may be a title such as
- * "ALL OF THE CLASSROOMS; AND THEIR CAPACITIES IN THE SYSTEM"; it is skipped.
  * Empty lines and spaces around values are ignored.
+ *
+ * The first line may be a title, for example
+ * "ALL OF THE CLASSROOMS; AND THEIR CAPACITIES IN THE SYSTEM" or "Classroom;Capacity".
+ * The first line is a title if it has no ';' or if the part after the first ';' has no digits.
+ * So a first line with a typo in the number (like "M302;4O" or "M302;45.5") is an error,
+ * not a title.
  */
 public class ClassroomReader {
 
@@ -36,10 +40,9 @@ public class ClassroomReader {
                 continue;
             }
 
-            // The first line is a title if it is not a valid "name;number" line.
             if (firstLine) {
                 firstLine = false;
-                if (!looksLikeClassroom(line)) {
+                if (isTitle(line)) {
                     continue;
                 }
             }
@@ -82,9 +85,18 @@ public class ClassroomReader {
         return classrooms;
     }
 
-    private boolean looksLikeClassroom(String line) {
-        String[] parts = line.split(";", -1);
-        return parts.length == 2 && parts[1].strip().matches("-?\\d+");
+    /**
+     * A title line has no ';' at all, or no digits after the first ';'.
+     * "ALL OF THE CLASSROOMS; AND THEIR CAPACITIES" and "DERSLIKLER" are titles,
+     * but "M302;4O" is not, because "4O" has a digit in it.
+     */
+    private boolean isTitle(String line) {
+        int semicolon = line.indexOf(';');
+        if (semicolon < 0) {
+            return true;
+        }
+        String afterSemicolon = line.substring(semicolon + 1);
+        return afterSemicolon.chars().noneMatch(Character::isDigit);
     }
 
     /** Removes spaces at both ends and the invisible BOM mark some editors add. */
