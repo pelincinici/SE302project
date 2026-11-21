@@ -1,0 +1,4 @@
+# Keep line endings correct for the Maven Wrapper on every OS
+* text=auto
+mvnw text eol=lf
+*.cmd text eol=crlf

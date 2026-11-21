@@ -25,13 +25,16 @@ SE302 Software Engineering — Section 2, Team 1 term project repository.
 
 ## Getting Started
 
-Requirements: JDK 21
+Requirements: **JDK 21 or newer**. You do not need to install Maven: the project uses the Maven Wrapper.
 
-```bash
+```
 git clone https://github.com/pelincinici/SE302project.git
 cd SE302project
-javac -d out src/*.java
-java -cp out Main
+.\mvnw.cmd javafx:run      (Windows)
+./mvnw javafx:run          (macOS / Linux)
 ```
 
-Or open the folder in IntelliJ IDEA and run `Main`.
+Run the tests with `.\mvnw.cmd test`. On Windows write `.\` at the start, otherwise some computers say "is not recognized".
+The first run takes a few minutes because Maven and JavaFX are downloaded. The window may open behind other windows.
+
+**IntelliJ IDEA:** File → Open → choose `pom.xml` → "Open as Project". Run with the Maven tool window: Plugins → javafx → `javafx:run`.
