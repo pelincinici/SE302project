@@ -83,8 +83,8 @@ class RealisticDataTest {
     @Test
     void readsAllCoursesInFileOrder() {
         assertEquals(31, courses.size());
-        assertEquals("MATH153", courses.get(0).getCode());
-        assertEquals("SE499", courses.get(courses.size() - 1).getCode());
+        assertEquals("MATH153", courses.getFirst().getCode());
+        assertEquals("SE499", courses.getLast().getCode());
     }
 
     @ParameterizedTest(name = "{0} has {1} students")

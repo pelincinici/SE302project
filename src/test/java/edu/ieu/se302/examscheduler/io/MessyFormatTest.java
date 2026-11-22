@@ -55,7 +55,7 @@ class MessyFormatTest {
         List<Classroom> rooms = classrooms("TITLE\r\nM302;45\r\nD104;120\r\n", true);
 
         assertEquals(2, rooms.size());
-        assertEquals("M302", rooms.get(0).getName());
+        assertEquals("M302", rooms.getFirst().getName());
     }
 
     @Test
@@ -63,8 +63,8 @@ class MessyFormatTest {
         List<Classroom> rooms = classrooms("M302;45\nD104;120", true);
 
         assertEquals(2, rooms.size());
-        assertEquals("M302", rooms.get(0).getName());
-        assertEquals(45, rooms.get(0).getCapacity());
+        assertEquals("M302", rooms.getFirst().getName());
+        assertEquals(45, rooms.getFirst().getCapacity());
     }
 
     @Test
@@ -79,8 +79,8 @@ class MessyFormatTest {
     void tabsAndSpacesAroundValues() throws Exception {
         List<Classroom> rooms = classrooms("TITLE\n\tM302\t;\t45\t\n   D104 ;   120   ", false);
 
-        assertEquals("M302", rooms.get(0).getName());
-        assertEquals(45, rooms.get(0).getCapacity());
+        assertEquals("M302", rooms.getFirst().getName());
+        assertEquals(45, rooms.getFirst().getCapacity());
         assertEquals("D104", rooms.get(1).getName());
         assertEquals(120, rooms.get(1).getCapacity());
     }
@@ -97,7 +97,7 @@ class MessyFormatTest {
         List<Classroom> rooms = classrooms("DERSLİKLER\nBüyük_Amfi;150\nLab-Ğ;20\nŞ-101;40\nİ-Öğrenci_Salonu;90", false);
 
         assertEquals(4, rooms.size());
-        assertEquals("Büyük_Amfi", rooms.get(0).getName());
+        assertEquals("Büyük_Amfi", rooms.getFirst().getName());
         assertEquals("Lab-Ğ", rooms.get(1).getName());
         assertEquals("İ-Öğrenci_Salonu", rooms.get(3).getName());
     }
@@ -115,14 +115,14 @@ class MessyFormatTest {
         List<Classroom> rooms = classrooms(title + "\nM302;45\nD104;120", false);
 
         assertEquals(2, rooms.size());
-        assertEquals("M302", rooms.get(0).getName());
+        assertEquals("M302", rooms.getFirst().getName());
     }
 
     @Test
     void leadingZerosInCapacity() throws Exception {
         List<Classroom> rooms = classrooms("TITLE\nM302;045\nLAB-A;0030", false);
 
-        assertEquals(45, rooms.get(0).getCapacity());
+        assertEquals(45, rooms.getFirst().getCapacity());
         assertEquals(30, rooms.get(1).getCapacity());
     }
 
@@ -133,22 +133,22 @@ class MessyFormatTest {
         List<Course> list = courses("SE302\r\n['A1', 'A2']\r\n\r\nSE115\r\n['A3']\r\n", true);
 
         assertEquals(2, list.size());
-        assertEquals("SE302", list.get(0).getCode());
-        assertEquals(List.of("A1", "A2"), list.get(0).getStudentIds());
+        assertEquals("SE302", list.getFirst().getCode());
+        assertEquals(List.of("A1", "A2"), list.getFirst().getStudentIds());
     }
 
     @Test
     void mixedQuotesAndSpacingInsideList() throws Exception {
         List<Course> list = courses("SE302\n[ 'A1' ,\"A2\",A3 ,   'A4'   ]", false);
 
-        assertEquals(List.of("A1", "A2", "A3", "A4"), list.get(0).getStudentIds());
+        assertEquals(List.of("A1", "A2", "A3", "A4"), list.getFirst().getStudentIds());
     }
 
     @Test
     void tabsInsideList() throws Exception {
         List<Course> list = courses("SE302\n[\t'A1',\t'A2'\t]", false);
 
-        assertEquals(List.of("A1", "A2"), list.get(0).getStudentIds());
+        assertEquals(List.of("A1", "A2"), list.getFirst().getStudentIds());
     }
 
     @Test
@@ -163,7 +163,7 @@ class MessyFormatTest {
     void courseCodesWithDashesAndDigits() throws Exception {
         List<Course> list = courses("CE-215\n['A1']\nMATH153\n['A2']\nSE_302_B\n['A3']", false);
 
-        assertEquals("CE-215", list.get(0).getCode());
+        assertEquals("CE-215", list.getFirst().getCode());
         assertEquals("SE_302_B", list.get(2).getCode());
     }
 
@@ -175,8 +175,8 @@ class MessyFormatTest {
         }
         List<Course> list = courses("MATH153\n[" + String.join(", ", ids) + "]", false);
 
-        assertEquals(2000, list.get(0).getStudentCount());
-        assertEquals("20230600001", list.get(0).getStudentIds().get(0));
-        assertEquals("20230602000", list.get(0).getStudentIds().get(1999));
+        assertEquals(2000, list.getFirst().getStudentCount());
+        assertEquals("20230600001", list.getFirst().getStudentIds().getFirst());
+        assertEquals("20230602000", list.getFirst().getStudentIds().get(1999));
     }
 }

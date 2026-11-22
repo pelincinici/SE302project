@@ -13,10 +13,10 @@ import java.util.Set;
 
 /**
  * Reads the classroom file.
- *
+ * <p>
  * Format: one classroom per line as "name;capacity", for example "Classroom_01;40".
  * Empty lines and spaces around values are ignored.
- *
+ * <p>
  * The first line may be a title, for example
  * "ALL OF THE CLASSROOMS; AND THEIR CAPACITIES IN THE SYSTEM" or "Classroom;Capacity".
  * The first line is a title if it has no ';' or if the part after the first ';' has no digits.

@@ -62,8 +62,7 @@ class InvalidCourseStudentFileTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("brokenFiles")
-    void brokenFileGivesLineNumberAndMessage(String description, String content, int line, String messagePart)
-            throws Exception {
+    void brokenFileGivesLineNumberAndMessage(String description, String content, int line, String messagePart) {
         FileFormatException e = assertThrows(FileFormatException.class, () -> reader.read(write(content)));
 
         assertEquals(line, e.getLineNumber(), description);
@@ -73,7 +72,7 @@ class InvalidCourseStudentFileTest {
     }
 
     @Test
-    void emptyFileIsAnError() throws Exception {
+    void emptyFileIsAnError() {
         FileFormatException e = assertThrows(FileFormatException.class, () -> reader.read(write("")));
 
         assertTrue(e.getMessage().contains("no courses"));
