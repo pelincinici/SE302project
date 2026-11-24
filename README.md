@@ -17,11 +17,49 @@ SE302 Software Engineering — Section 2, Team 1 term project repository.
 
 ```
 .
-├── docs/        # Project documentation (requirements, design, reports)
-├── src/         # Java source code
-├── .gitignore   # Java / IntelliJ ignore rules
+├── docs/
+│   └── ui/                  # Screen sketches
+├── src/
+│   ├── main/java/edu/ieu/se302/examscheduler/
+│   │   ├── App.java         # Starts the program
+│   │   ├── ui/              # Screens (JavaFX)
+│   │   ├── service/         # Links the screens with the rest
+│   │   ├── scheduler/       # The scheduling algorithm
+│   │   ├── io/              # Reading and writing files
+│   │   └── model/           # Data classes
+│   └── test/
+│       ├── java/...         # JUnit 5 tests (same packages as main)
+│       └── resources/       # Test CSV files
+├── pom.xml                  # Maven project file
+├── mvnw, mvnw.cmd, .mvn/    # Maven Wrapper (no Maven install needed)
 └── README.md
 ```
+
+## Architecture
+
+The program has five packages. Each package has one job, and a package only uses
+the packages below it:
+
+```
+ui  ──►  service  ──►  scheduler ──┐
+                  └─►  io ─────────┴─►  model
+```
+
+- **ui** – JavaFX screens: main window, dialogs, the four views (classroom, student,
+  course, day) and the help window. It only shows data and passes the user's actions
+  to `service`.
+- **service** – loads the files with `io`, keeps the current data and exam period,
+  runs `scheduler` and gives the result to `ui`.
+- **scheduler** – the algorithm. Keeps manual exams fixed, places the other exams into
+  slots and classrooms without breaking the student rules, and reports "no solution"
+  when some exams cannot be placed. It has a limit on tries or time.
+- **io** – reads the classroom file and the course–student file. A wrong line gives an
+  error with the file name and line number.
+- **model** – data classes (`Classroom`, `Course`, `Student`, `ExamPeriod`, `TimeSlot`,
+  `ExamAssignment`, `Schedule`). They do not use any other package.
+
+Because `scheduler` and `io` do not know about the screens, they can be tested
+without opening a window.
 
 ## Getting Started
 
